@@ -30,7 +30,7 @@ import {
 import { bookVenue, getAllVenuesforUser } from "../Controller/user/venueController";
 import upload from "../Middleware/uploadMulter";
 import { authMiddleware } from "../Middleware/auth";
-import { createTournamentPost } from "../Controller/tournamentController";
+import { createTournamentPost, getAllTournamentPost } from "../Controller/tournamentController";
 
 const router = express.Router();
 
@@ -75,11 +75,11 @@ router.get("/postById/:id", getPostById);
 router.post("/postById/:id/join", joinMatchPost);
 
 router.patch("/deletepost/:id", deletePost);
-
-router.post("/team", createTeam);
+    
 
 router.post("/createTournament",authMiddleware,upload.single("image"),createTournamentPost)
-
+ 
+router.get("/getAllTournament",getAllTournamentPost)
 router.post("/updateprofile", upload.single("picture"), updateUser);
                     
 
@@ -91,7 +91,7 @@ router.post("/postById/:id/join", joinMatchPost);
 router.patch("/deletepost/:id", deletePost);
 router.post("/updateprofile", upload.single("picture"), updateUser);
 
-router.post("/team", createTeam);
+router.post("/team",authMiddleware, createTeam);
 
 router.post("/me", authMiddleware ,LoginedUserDetails);
 

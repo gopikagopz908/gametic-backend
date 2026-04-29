@@ -6,11 +6,13 @@ import { asyncErrorhandler } from "../Middleware/asyncErrorHandler";
 import { AuthenticatedRequest } from '../Middleware/auth';
 import mongoose from "mongoose";
 import {sendEmailService} from '../utils/sentInvitation'
-
+                                    
 
 export const createTeam = asyncErrorhandler(async (req: AuthenticatedRequest, res: Response) => {
   const { name, sport, memberEmails } = req.body;
  const { userId, role } = req.user!;
+
+ console.log(req.user,"????????????")
   
 const teamManager=new mongoose.Types.ObjectId(userId);
 
