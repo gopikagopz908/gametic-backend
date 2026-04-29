@@ -10,49 +10,59 @@ import upload from "./Middleware/uploadMulter";
 import manageError from "./Middleware/manageError";
 
 
-
 const app = express();
-dotenv.config();
 
-
+/* ===============================
+   ✅ CORS CONFIG (ONLY ONCE)
+================================= */
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: ["http://localhost:3000", "http://localhost:5173"],
+  credentials: true
 }));
 
+/* ===============================
+   ✅ MIDDLEWARES
+================================= */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-
+/* ===============================
+   ✅ DATABASE CONNECTION
+================================= */
 if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI is not defined in environment variables");
 }
+
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("DB Connected"))
-  .catch((err) => console.log(err));
+  .then(() => console.log("✅ DB Connected"))
+  .catch((err) => {
+    console.error("❌ DB Connection Error:", err.message);
+    process.exit(1);
+  });
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-
-//owner apis
+/* ===============================
+   ✅ ROUTES
+================================= */
 app.use("/api/admin", adminRoute);
-app.use("/api/", ownerRoute);
+app.use("/api", ownerRoute);
 app.use("/api", userRouter);
+
 app.get("/hello", (req, res) => {
-  res.json("www");
+  res.json({ message: "Server is working 🚀" });
 });
 
+/* ===============================
+   ✅ GLOBAL ERROR HANDLER
+================================= */
+app.use(manageError);
 
+/* ===============================
+   ✅ SERVER START
+================================= */
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});

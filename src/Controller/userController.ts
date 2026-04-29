@@ -114,10 +114,12 @@ export const loginUser = asyncHandler(
     });
     console.log(
       accessToken,
-      refreshToken,
-      user,
       "accessToken,refreshToken,user................"
     );
+       
+
+
+                   
     // Make all cookies consistent for cross-origin
     res.cookie("role", user.role, {
       httpOnly: false, // Keep false if you need to access it from JS
@@ -177,6 +179,8 @@ export const emailVerification = asyncHandler(
     next: NextFunction
   ): Promise<void> => {
     const { email } = req.body;
+
+    console.log(email,"emailll")
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {

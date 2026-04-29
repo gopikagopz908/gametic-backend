@@ -24,7 +24,11 @@ export const createTournamentPost = asyncErrorhandler(async (req: AuthenticatedR
     prizePool,
     image
   } = req.body;
+
+console.log(req.user,"userrrrr")
+
   const { userId } = req.user!;
+
   const file = req.file;
 
   if (!file) {

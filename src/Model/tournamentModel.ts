@@ -19,7 +19,7 @@ export interface ITournament extends Document {
 
 const tournamentSchema = new Schema<ITournament>(
   {
-    title: { type: String, required: true },
+    title: { type: String},
     description: { type: String, required: true },
     sport: { type: String, required: true },
     location: String,

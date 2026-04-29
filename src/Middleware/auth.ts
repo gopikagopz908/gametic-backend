@@ -29,6 +29,8 @@ const authMiddleware = async (
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as CustomJwtPayload;
+
+    console.log(decoded,"decodeee")
     const userId = decoded.userId || decoded.id;
     const user = await User.findById(userId).select('-password');
 
