@@ -7,7 +7,7 @@ const ownerRoute=express()
 
 ownerRoute.post('/owner/addTurf',verifyOwner,upload.array('images',5),createTurf)
 ownerRoute.patch('/owner/editTurf/:id',verifyOwner,upload.array('images',5),editTurf)
-ownerRoute.get('getAllturf',getAllturf)
+ownerRoute.get('/owner/getAllturf',getAllturf)
 ownerRoute.delete('/owner/turfs/:id', verifyOwner,deleteTurf)
 ownerRoute.get('/owner/getTurf/:id',verifyOwner,turfById)
 ownerRoute.put("/users/:id",verifyOwner, updateUserProfile);
