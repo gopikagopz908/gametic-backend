@@ -8,6 +8,7 @@ import cors from "cors";
 import adminRoute from './Routes/adminRoutes'
 import upload from "./Middleware/uploadMulter";
 import manageError from "./Middleware/manageError";
+import tournamentRouter from "./Routes/tournamentRoutes";
 
 
 const app = express();
@@ -48,7 +49,7 @@ mongoose
 app.use("/api/admin", adminRoute);
 app.use("/api", ownerRoute);
 app.use("/api", userRouter);
-
+app.use("/api/tournament", tournamentRouter); // 👈 ADD THIS
 app.get("/hello", (req, res) => {
   res.json({ message: "Server is working 🚀" });
 });

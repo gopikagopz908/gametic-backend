@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { asyncErrorhandler } from "../../Middleware/asyncErrorHandler";
 import Turff from "../../Model/turfModel";
-
 export const getAllVenues = asyncErrorhandler(
   async (req: Request, res: Response) => {
     const page = Number(req.query.page) || 1;
@@ -13,11 +12,7 @@ export const getAllVenues = asyncErrorhandler(
       return res.status(400).json({ message: "Invalid pagination parameters" });
     }
 
-    const query: Partial<{
-      $or?: Array<{ [key: string]: { $regex: string; $options: string } }>;
-      turfType: string;
-    }> = {};
-
+    const query: any = {};
 
     if (turfType) {
       query.turfType = turfType;
@@ -30,9 +25,19 @@ export const getAllVenues = asyncErrorhandler(
       ];
     }
 
+    // 🔹 Total venues
     const totalVenues = await Turff.countDocuments(query);
+
+    // 🔹 Active venues (isBlocked: false)
     const totalActiveVenues = await Turff.countDocuments({
       ...query,
+      isBlocked: false,
+    });
+
+    // 🔹 Banned venues (isBlocked: true)
+    const totalBannedVenues = await Turff.countDocuments({
+      ...query,
+      isBlocked: true,
     });
 
     const venues = await Turff.find(query)
@@ -44,6 +49,7 @@ export const getAllVenues = asyncErrorhandler(
       venues,
       totalVenues,
       totalActiveVenues,
+      totalBannedVenues,
     });
   }
 );

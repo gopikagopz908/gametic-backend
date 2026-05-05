@@ -27,7 +27,7 @@ import {
   joinMatch,
   verifyJoinPayment,
 } from "../Controller/user/matchHostController";
-import { bookVenue, getAllVenuesforUser } from "../Controller/user/venueController";
+import { bookVenue, createBookingOrder, getAllVenuesforUser, getVenueByIdforUser } from "../Controller/user/venueController";
 import upload from "../Middleware/uploadMulter";
 import { authMiddleware } from "../Middleware/auth";
 import { createTournamentPost, getAllTournamentPost } from "../Controller/tournamentController";
@@ -64,8 +64,11 @@ router
   .post("/verify-join-payment", authMiddleware, verifyJoinPayment)
 
   //venue booking
-  .post("/venue-booking", bookVenue)
+  .post("/venue-booking",authMiddleware, bookVenue)
+  .post("/create-booking-order", authMiddleware, createBookingOrder)
+
   .get('/getAllVenues',getAllVenuesforUser)
+  .get("/veunesById/:turfId", getVenueByIdforUser);
 
 router.post("/addMatch", addPost);
 router.get("/getAllPost", getAllPost);

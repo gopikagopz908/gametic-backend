@@ -33,6 +33,7 @@ export interface TurffData extends Document {
   ratings: Rating[];
   bookings: Booking[];
   averageRating?: number;
+  isBlocked:boolean;
 }
 
 const turfSchema = new Schema<TurffData>(
@@ -117,6 +118,10 @@ const turfSchema = new Schema<TurffData>(
       type: Boolean,
       default: false,
     },
+    isBlocked: {
+  type: Boolean,
+  default: false,
+},
     ratings: [ratingSchema],
     bookings: [bookingSchema],
     averageRating: {

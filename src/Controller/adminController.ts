@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { asyncErrorhandler } from "../Middleware/asyncErrorHandler";
 import User from "../Model/userModel";
 import { deleteUserService, toggleBlockUser } from "../Service/adminServices";
+import { Booking } from "../Model/bookingModel";
+import Turff from "../Model/turfModel";
 
 
 export const getAllUsers = asyncErrorhandler(
@@ -95,5 +97,84 @@ export const deleteUser = asyncErrorhandler(
     }
 
     res.status(200).json({ message: "User deleted successfully" });
+  }
+);
+
+
+export const getAllBookings = asyncErrorhandler(
+  async (req: Request, res: Response) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    if (page < 1 || limit < 1) {
+      return res.status(400).json({
+        message: "Invalid pagination parameters",
+      });
+    }
+
+    const totalBookings = await Booking.countDocuments();
+
+    const bookings = await Booking.find()
+      .populate("userId", "username email phone")
+      .populate("ownerId", "username email")
+      .populate("turfId", "name location city")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json({
+      message: "All bookings fetched successfully",
+      totalBookings,
+      currentPage: page,
+      totalPages: Math.ceil(totalBookings / limit),
+      bookings,
+    });
+  }
+);
+
+
+// 🔥 Ban / Unban Venue
+export const toggleBlockVenue = asyncErrorhandler(
+  async (req: Request, res: Response) => {
+    const venueId = req.params.id;
+
+    const venue = await Turff.findById(venueId);
+
+    if (!venue) {
+      return res.status(404).json({ message: "Venue not found" });
+    }
+
+    // ✅ Toggle the document field (not the model)
+    venue.isBlocked = !venue.isBlocked;
+
+    await venue.save();
+
+    res.status(200).json({
+      message: `Venue ${
+        venue.isBlocked ? "banned" : "unbanned"
+      } successfully`,
+      venue: {
+        id: venue._id,
+        name: venue.name,
+        isBlocked: venue.isBlocked,
+      },
+    });
+  }
+);
+
+
+export const deleteVenue = asyncErrorhandler(
+  async (req: Request, res: Response) => {
+    const venueId = req.params.id;
+
+    const deletedVenue = await Turff.findByIdAndDelete(venueId);
+
+    if (!deletedVenue) {
+      return res.status(404).json({ message: "Venue not found" });
+    }
+
+    res.status(200).json({
+      message: "Venue permanently deleted",
+    });
   }
 );

@@ -2,7 +2,10 @@ import express from "express";
 import {
   blockUser,
   deleteUser,
+  deleteVenue,
+  getAllBookings,
   getAllUsers,
+  toggleBlockVenue,
 } from "../Controller/adminController";
 import { getAllVenues } from "../Controller/admin/venueController";
 import { loginAdmin } from "../Controller/admin/authentication";
@@ -19,6 +22,10 @@ route
   .delete("/delete-user/:id", deleteUser)
 
   //Handling Venues
-  .get("/venues", getAllVenues);
+  .get("/venues", getAllVenues)
+  .patch("/ban/:id",toggleBlockVenue)
+  .delete("/delete-venu/:id",deleteVenue)
+  // Handling Bookings
+   .get("/bookings", getAllBookings)
 
 export default route;
