@@ -59,7 +59,7 @@ app.get("/hello", (req, res) => {
 ================================= */
 app.use(manageError);
 
-/* ===============================
+/* ===https://gametic-frontend.vercel.app/============================
    ✅ SERVER START
 ================================= */
 const PORT = process.env.PORT || 5000;
