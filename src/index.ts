@@ -17,7 +17,7 @@ const app = express();
    ✅ CORS CONFIG (ONLY ONCE)
 ================================= */
 app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:5173"],
+  origin: ["https://gametic-backend-1.onrender.com"],
   credentials: true
 }));
 
