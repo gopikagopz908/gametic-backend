@@ -15,9 +15,9 @@ const app = express();
 dotenv.config(); 
 /* ===============================
    ✅ CORS CONFIG (ONLY ONCE)
-================================= */
+================================= */ 
 app.use(cors({
-  origin: ["https://gametic-frontend-c2ru.vercel.app"],
+  origin: true,
   credentials: true
 }));
 
