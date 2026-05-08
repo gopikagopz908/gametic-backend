@@ -169,7 +169,7 @@ export const logOut = asyncHandler(async (req, res) => {
 });
 
 const generateOTP = (): string => {
-  return "1234";
+  return "123456";
 };
 
 export const emailVerification = asyncHandler(
