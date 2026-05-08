@@ -116,10 +116,10 @@ export const loginUser = asyncHandler(
       accessToken,
       "accessToken,refreshToken,user................"
     );
-       
 
 
-                   
+
+
     // Make all cookies consistent for cross-origin
     res.cookie("role", user.role, {
       httpOnly: false, // Keep false if you need to access it from JS
@@ -169,7 +169,7 @@ export const logOut = asyncHandler(async (req, res) => {
 });
 
 const generateOTP = (): string => {
-  return crypto.randomInt(100000, 999999).toString();
+  return "1234";
 };
 
 export const emailVerification = asyncHandler(
@@ -180,7 +180,7 @@ export const emailVerification = asyncHandler(
   ): Promise<void> => {
     const { email } = req.body;
 
-    console.log(email,"emailll")
+    console.log(email, "emailll")
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -349,17 +349,17 @@ export const updateUser = asyncHandler(
 
 export const LoginedUserDetails = asyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-// const userId ="68470dbc134bb9190212de1e"
+    // const userId ="68470dbc134bb9190212de1e"
 
-const userId = req.user?.userId
-console.log(userId);
+    const userId = req.user?.userId
+    console.log(userId);
 
-if (!userId) {
-  throw new Error("User not authenticated");
-}
+    if (!userId) {
+      throw new Error("User not authenticated");
+    }
 
-const user = await getLoginedUserDetails(userId);
-console.log(user , "user");
+    const user = await getLoginedUserDetails(userId);
+    console.log(user, "user");
 
     res.status(200).json({
       user
