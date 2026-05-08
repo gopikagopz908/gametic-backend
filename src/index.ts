@@ -16,11 +16,11 @@ dotenv.config();
 /* ===============================
    ✅ CORS CONFIG (ONLY ONCE)
 ================================= */ 
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
 
+app.use(cors({
+  origin: "https://gametic-frontend-c2ru.vercel.app",
+  credentials: true,
+}));
 /* ===============================
    ✅ MIDDLEWARES
 ================================= */
